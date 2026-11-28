@@ -20,6 +20,36 @@ afterAll(async () => {
   await mongod.stop();
 });
 
+describe('Production health and proxy configuration', () => {
+  it.each(['/health', '/api/health'])('reports database readiness from %s', async (path) => {
+    const response = await request(app).get(path);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.success).toBe(true);
+    expect(response.body.data.database).toEqual({ status: 'connected', connected: true });
+  });
+
+  it('accepts the configured Render frontend origin', async () => {
+    const response = await request(app)
+      .options('/api/auth/login')
+      .set('Origin', 'https://postpartum-maternal-care-tracker-1.onrender.com')
+      .set('Access-Control-Request-Method', 'POST');
+
+    expect(response.statusCode).toBe(204);
+    expect(response.headers['access-control-allow-origin'])
+      .toBe('https://postpartum-maternal-care-tracker-1.onrender.com');
+  });
+
+  it('handles forwarded client IPs behind Render proxy', async () => {
+    const response = await request(app)
+      .get('/api/auth/me')
+      .set('X-Forwarded-For', '203.0.113.10');
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body.success).toBe(false);
+  });
+});
+
 describe('Frontend hosting', () => {
   it('serves the React app for the home page and client-side routes', async () => {
     const home = await request(app).get('/');

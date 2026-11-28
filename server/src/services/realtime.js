@@ -9,7 +9,7 @@ let io;
 export function attachRealtime(httpServer) {
   io = new Server(httpServer, {
     cors: {
-      origin: env.clientUrl,
+      origin: env.clientUrls,
       credentials: true
     }
   });

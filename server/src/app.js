@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import mongoose from 'mongoose';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
@@ -18,6 +19,7 @@ import apiRoutes from './routes/apiRoutes.js';
 
 const app = express();
 const clientDistPath = fileURLToPath(new URL('../../dist/', import.meta.url));
+app.set('trust proxy', 1);
 
 const apiLimiter = rateLimit({
   windowMs: env.rateLimitWindowMs,
@@ -46,28 +48,38 @@ const authLimiter = rateLimit({
 app.use(helmet());
 app.use(
   cors({
-    origin: env.clientUrl,
+    origin: env.clientUrls,
     credentials: true
   })
 );
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
-app.use(apiLimiter);
 app.use(requestLogger);
 
-app.get('/api/health', (req, res) => {
-  res.status(200).json({
-    success: true,
+function healthCheck(req, res) {
+  const databaseConnected = mongoose.connection.readyState === 1;
+  const status = databaseConnected ? 'ok' : 'degraded';
+  return res.status(databaseConnected ? 200 : 503).json({
+    success: databaseConnected,
     data: {
-      status: 'ok',
+      status,
       service: 'postpartum-tracker-server',
+      database: {
+        status: databaseConnected ? 'connected' : 'disconnected',
+        connected: databaseConnected
+      },
       environment: env.nodeEnv,
       uptime: process.uptime()
     },
-    message: 'Server is healthy'
+    message: databaseConnected ? 'Server is healthy' : 'Database is unavailable',
+    errors: databaseConnected ? [] : ['Database is unavailable']
   });
-});
+}
 
+app.get('/health', healthCheck);
+app.get('/api/health', healthCheck);
+
+app.use('/api', apiLimiter);
 app.use('/api/auth/login', authLimiter);
 app.use('/api/auth/register', authLimiter);
 app.use('/api/auth', authRoutes);

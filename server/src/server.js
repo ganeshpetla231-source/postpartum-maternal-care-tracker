@@ -9,9 +9,12 @@ async function startServer() {
 
   const server = createServer(app);
   attachRealtime(server);
-  server.listen(env.port, () => {
-    console.log(`Server is running on http://localhost:${env.port}`);
+  server.listen(env.port, '0.0.0.0', () => {
+    console.log(`Server running on port ${env.port}`);
   });
 }
 
-startServer();
+startServer().catch(() => {
+  console.error('Server startup failed. Check MongoDB and Render environment variables.');
+  process.exit(1);
+});
