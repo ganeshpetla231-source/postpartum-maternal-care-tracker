@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import apiClient from '../api/apiClient';
+import PasswordInput from '../components/PasswordInput';
 import { saveAccessToken } from '../utils/auth';
 
 function FamilyAcceptPage() {
@@ -58,16 +59,15 @@ function FamilyAcceptPage() {
         </label>
         <label htmlFor="family-password" className="block text-sm font-medium text-slate-700">
           Create a password
-          <input
+          <PasswordInput
             id="family-password"
-            type="password"
             required
             minLength={8}
             maxLength={128}
             autoComplete="new-password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            className="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2"
+            inputClassName="block w-full rounded-lg border border-slate-300 px-3 py-2"
           />
         </label>
         <button

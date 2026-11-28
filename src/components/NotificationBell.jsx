@@ -25,7 +25,7 @@ function NotificationBell() {
         if (active) toast.error(error.response?.data?.message || 'Notifications could not be loaded.');
       });
 
-    const apiUrl = import.meta.env.VITE_API_URL || '/api';
+    const apiUrl = import.meta.env.MODE === 'production' ? '/api' : import.meta.env.VITE_API_URL || '/api';
     const socket = io(new URL(apiUrl, window.location.origin).origin, { auth: { token } });
     socket.on('notification:new', (notification) => {
       setItems((current) => [notification, ...current.filter((item) => item._id !== notification._id)].slice(0, 10));

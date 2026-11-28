@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import apiClient, { refreshAccessToken } from '../api/apiClient';
+import PasswordInput from '../components/PasswordInput';
 import { clearAccessToken, homePathForRole, saveAccessToken } from '../utils/auth';
 import { useLocale } from '../i18n/LocaleContext';
 
@@ -345,12 +346,11 @@ function AuthPage() {
           </p>
           <label className="block text-sm font-medium text-slate-700">
             Current password
-            <input
+            <PasswordInput
               autoComplete="current-password"
-              className="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2"
+              inputClassName="block w-full rounded-lg border border-slate-300 px-3 py-2"
               onChange={(event) => setDeletePassword(event.target.value)}
               required
-              type="password"
               value={deletePassword}
             />
           </label>
@@ -411,15 +411,14 @@ function AuthPage() {
         </label>
         <label className="block text-sm font-medium text-slate-700">
           {t('Password')}
-          <input
-            type="password"
+          <PasswordInput
             required
             minLength={registering ? 8 : 1}
             maxLength={128}
             autoComplete={registering ? 'new-password' : 'current-password'}
             value={form.password}
             onChange={(event) => setForm((current) => ({ ...current, password: event.target.value }))}
-            className="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2"
+            inputClassName="block w-full rounded-lg border border-slate-300 px-3 py-2"
           />
           {registering && (
             <span className="mt-1 block text-xs font-normal text-slate-500">

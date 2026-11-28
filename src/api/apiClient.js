@@ -2,7 +2,7 @@ import axios from 'axios';
 import { clearAccessToken, saveAccessToken } from '../utils/auth';
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: import.meta.env.MODE === 'production' ? '/api' : import.meta.env.VITE_API_URL || '/api',
   timeout: 10000,
   withCredentials: true,
   headers: {

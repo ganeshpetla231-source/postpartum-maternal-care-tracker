@@ -126,8 +126,8 @@ function EscalationsPage() {
       return undefined;
     }
     let alive = true;
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-    const socket = io(apiUrl.replace(/\/api\/?$/, ''), {
+    const apiUrl = import.meta.env.MODE === 'production' ? '/api' : import.meta.env.VITE_API_URL || '/api';
+    const socket = io(new URL(apiUrl, window.location.origin).origin, {
       auth: { token: session.token },
       reconnection: true
     });

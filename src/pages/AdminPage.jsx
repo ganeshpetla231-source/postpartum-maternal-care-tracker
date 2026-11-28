@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import apiClient from '../api/apiClient';
+import PasswordInput from '../components/PasswordInput';
 
 function tokenRole() {
   const token = localStorage.getItem('accessToken');
@@ -143,14 +144,13 @@ function AdminPage() {
           </label>
           <label className="text-sm text-slate-700">
             Initial password (12+ characters)
-            <input
-              type="password"
+            <PasswordInput
               required
               minLength={12}
               maxLength={128}
               value={doctorForm.password}
               onChange={(event) => setDoctorForm((current) => ({ ...current, password: event.target.value }))}
-              className="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2"
+              inputClassName="block w-full rounded-lg border border-slate-300 px-3 py-2"
             />
           </label>
           <button type="submit" className="w-fit rounded-lg bg-slate-800 px-4 py-2 text-sm font-semibold text-white">
