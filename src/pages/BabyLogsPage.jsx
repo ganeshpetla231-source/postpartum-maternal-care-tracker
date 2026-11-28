@@ -59,7 +59,8 @@ function BabyLogsPage() {
         apiClient.get(`/babies/${babyId}/logs`, { params: { page: 1, limit: 50 } }),
         apiClient.get(`/babies/${babyId}/logs/summary`, { params: { date: today } })
       ]);
-      setLogs(logsResponse.data.data.items);
+      const logData = logsResponse.data.data;
+      setLogs(Array.isArray(logData) ? logData : logData?.items || []);
       setSummary(summaryResponse.data.data);
     } catch (requestError) {
       setError(requestError.response?.data?.message || 'Could not load this baby’s daily records.');

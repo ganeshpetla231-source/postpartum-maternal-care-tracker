@@ -17,7 +17,8 @@ function RecoveryPage() {
     setError('');
     try {
       const response = await apiClient.get('/recovery/milestones');
-      setMilestones(response.data.data.items);
+      const data = response.data.data;
+      setMilestones(Array.isArray(data) ? data : data?.items || []);
     } catch {
       setError('Could not load your recovery plan. Please sign in and try again.');
     } finally {

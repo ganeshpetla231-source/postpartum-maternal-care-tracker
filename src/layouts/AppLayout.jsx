@@ -7,7 +7,7 @@ import { useLocale } from '../i18n/LocaleContext';
 
 const navItems = [
   { label: 'Home', path: '/' },
-  { label: 'Screening', path: '/#screening', roles: ['mother'] },
+  { label: 'Screening', path: '/screening', roles: ['mother'] },
   { label: 'Notebook', path: '/dashboard', roles: ['mother'] },
   { label: 'Recovery', path: '/recovery', roles: ['mother'] },
   { label: 'Baby logs', path: '/babies', roles: ['mother'] },
@@ -24,7 +24,7 @@ const sideItems = [
   { label: 'Contents', path: '/dashboard', roles: ['mother'] },
   { label: 'Care Plan', path: '/recovery', roles: ['mother'] },
   { label: 'Baby Logs', path: '/babies', roles: ['mother'] },
-  { label: 'Wellbeing check-in', path: '/#screening', roles: ['mother'] },
+  { label: 'Wellbeing check-in', path: '/screening', roles: ['mother'] },
   { label: 'Care team', path: '/escalations', roles: ['mother', 'doctor'] },
   { label: 'Family sharing', path: '/family', roles: ['mother', 'family'] },
   { label: 'Community', path: '/forum', roles: ['mother', 'family', 'doctor', 'admin'] },

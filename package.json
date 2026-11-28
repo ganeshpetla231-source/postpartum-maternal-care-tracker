@@ -3,8 +3,16 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "workspaces": [
+    "server"
+  ],
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "dev:client": "vite",
+    "dev:server": "npm run dev --workspace @postpartum-tracker/server",
+    "start:server": "npm run start --workspace @postpartum-tracker/server",
+    "test:server": "npm test --workspace @postpartum-tracker/server",
+    "lint:server": "npm run lint --workspace @postpartum-tracker/server",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "node ../node_modules/eslint/bin/eslint.js src --ext .js,.jsx"
@@ -20,6 +28,7 @@
     "socket.io-client": "^4.8.4"
   },
   "devDependencies": {
+    "concurrently": "^9.1.2",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
     "eslint": "^8.57.1",

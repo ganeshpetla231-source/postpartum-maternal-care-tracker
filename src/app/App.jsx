@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import AppLayout from '../layouts/AppLayout';
 import HomePage from '../pages/HomePage';
 import RecoveryPage from '../pages/RecoveryPage';
@@ -14,6 +14,7 @@ import LactationPage from '../pages/LactationPage';
 import AuthPage from '../pages/AuthPage';
 import PrivacyPage from '../pages/PrivacyPage';
 import BabyLogsPage from '../pages/BabyLogsPage';
+import ScreeningPage from '../pages/ScreeningPage';
 import ProtectedRoute from '../components/ProtectedRoute';
 
 const DashboardPage = lazy(() => import('../pages/DashboardPage'));
@@ -40,7 +41,7 @@ function App() {
         />
         <Route path="/recovery" element={protect(<RecoveryPage />, ['mother'])} />
         <Route path="/babies" element={protect(<BabyLogsPage />, ['mother'])} />
-        <Route path="/screening" element={<Navigate to="/#screening" replace />} />
+        <Route path="/screening" element={protect(<ScreeningPage />, ['mother'])} />
         <Route path="/escalations" element={protect(<EscalationsPage />, ['mother', 'doctor'])} />
         <Route path="/family" element={protect(<FamilyPage />, ['mother', 'family'])} />
         <Route path="/family/accept" element={<FamilyAcceptPage />} />
