@@ -1,4 +1,6 @@
 import express from 'express';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
@@ -15,6 +17,7 @@ import phase2Routes from './routes/phase2Routes.js';
 import apiRoutes from './routes/apiRoutes.js';
 
 const app = express();
+const clientDistPath = fileURLToPath(new URL('../../dist/', import.meta.url));
 
 const apiLimiter = rateLimit({
   windowMs: env.rateLimitWindowMs,
@@ -81,6 +84,14 @@ app.get('/api', (req, res) => {
       docs: '/api/docs'
     },
     message: 'API ready'
+  });
+});
+
+app.use(express.static(clientDistPath, { index: false }));
+app.get('*', (req, res, next) => {
+  if (req.path === '/api' || req.path.startsWith('/api/')) return next();
+  res.sendFile(path.join(clientDistPath, 'index.html'), (error) => {
+    if (error) next(error);
   });
 });
 

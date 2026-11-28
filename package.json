@@ -10,6 +10,7 @@
     "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
     "dev:client": "node ./node_modules/vite/bin/vite.js",
     "dev:server": "npm run dev --workspace @postpartum-tracker/server",
+    "start": "npm run start --workspace @postpartum-tracker/server",
     "start:server": "npm run start --workspace @postpartum-tracker/server",
     "test:server": "npm test --workspace @postpartum-tracker/server",
     "lint:server": "npm run lint --workspace @postpartum-tracker/server",

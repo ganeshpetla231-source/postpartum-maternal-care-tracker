@@ -20,6 +20,26 @@ afterAll(async () => {
   await mongod.stop();
 });
 
+describe('Frontend hosting', () => {
+  it('serves the React app for the home page and client-side routes', async () => {
+    const home = await request(app).get('/');
+    const nestedRoute = await request(app).get('/dashboard');
+
+    expect(home.statusCode).toBe(200);
+    expect(home.headers['content-type']).toMatch(/text\/html/);
+    expect(nestedRoute.statusCode).toBe(200);
+    expect(nestedRoute.text).toContain('<div id="root"></div>');
+  });
+
+  it('keeps unknown API routes on the API error path', async () => {
+    const response = await request(app).get('/api/not-a-route');
+
+    expect(response.statusCode).toBe(401);
+    expect(response.headers['content-type']).toMatch(/application\/json/);
+    expect(response.body.success).toBe(false);
+  });
+});
+
 describe('Phase 1 auth API', () => {
   it('registers a new mother user', async () => {
     const res = await request(app)
