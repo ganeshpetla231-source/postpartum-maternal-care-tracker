@@ -2,7 +2,7 @@ import axios from 'axios';
 import { clearAccessToken, saveAccessToken } from '../utils/auth';
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  baseURL: import.meta.env.VITE_API_URL || 'https://postpartum-maternal-care-tracker.onrender.com/api',
   timeout: 10000,
   withCredentials: true,
   headers: {
